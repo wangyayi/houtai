@@ -4,11 +4,11 @@
       <el-image
       style="width: 140px; height: 140px; border-radius:70px"
       :src='require("../assets/logo.png")'></el-image>
-      <el-form ref="form" :model="loginInfo" :loginRules="loginRules">
-        <el-form-item>
+      <el-form ref="loginForm" :model="loginInfo" :rules="loginRules">
+        <el-form-item prop="name">
           <el-input v-model="loginInfo.name"  placeholder="用户名" ></el-input>
         </el-form-item>
-        <el-form-item >
+        <el-form-item prop="password">
           <el-input v-model="loginInfo.password"  placeholder="密码"></el-input>
         </el-form-item>
         <el-form-item style="text-align:center">
@@ -23,6 +23,20 @@
 <script>
 export default {
   data () {
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.loginInfo.password !== '') {
+          if (!/^[1-9a-z_-]{6}$/.test(this.loginInfo.password)) {
+            // 如果验证不成功，显示错误信息
+            callback(new Error('密码是六位数'))
+          } else {
+            callback()
+          }
+        }
+      }
+    }
     return {
       loginInfo: {
         name: '',
@@ -31,16 +45,26 @@ export default {
       loginRules: {
         name: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 3, max: 75, message: '长度在 3 到 7 个字符', trigger: 'blur' }
+          { min: 3, max: 7, message: '长度在 3 到 7 个字符', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { validator: validatePass, trigger: 'blur' }
         ]
       }
     }
   },
   methods: {
-
+    submitInfo (formName) {
+      this.$refs.loginForm.validate((valid) => {
+        if (valid) {
+          alert('登录成功!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    }
   }
 }
 </script>
