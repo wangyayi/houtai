@@ -59,7 +59,6 @@ export default {
     submitInfo (formName) {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          alert('登录成功')
           // 发送请求
           this.$http({
             method: 'post',
@@ -74,6 +73,10 @@ export default {
           })
           // localStorage.setItem('key', this.loginInfo)
           this.$router.push('/home')
+          // this.$message({
+          //   message: '登录成功啦',
+          //   type: 'success'
+          // })
         } else {
           console.log('error submit!!')
           return false
