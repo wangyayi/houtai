@@ -59,6 +59,7 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           alert('登录成功!')
+          this.$router.push('/home')
         } else {
           console.log('error submit!!')
           return false
