@@ -6,10 +6,10 @@
       :src='require("../assets/logo.png")'></el-image>
       <el-form ref="loginForm" :model="loginInfo" :rules="loginRules">
         <el-form-item prop="name">
-          <el-input v-model="loginInfo.name"  placeholder="用户名" ></el-input>
+          <el-input v-model="loginInfo.mobile"  placeholder="电话号码" ></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="loginInfo.password"  placeholder="密码"></el-input>
+          <el-input v-model="loginInfo.code"  placeholder="验证码"></el-input>
         </el-form-item>
         <el-form-item style="text-align:center">
           <el-button type="primary" @click="submitInfo">登录</el-button>
@@ -28,8 +28,8 @@ export default {
       if (value === '') {
         callback(new Error('请输入密码'))
       } else {
-        if (this.loginInfo.password !== '') {
-          if (!/^[1-9a-z_-]{6}$/.test(this.loginInfo.password)) {
+        if (this.loginInfo.code !== '') {
+          if (!/^[0-9]{6}$/.test(this.loginInfo.code)) {
             // 如果验证不成功，显示错误信息
             callback(new Error('密码是六位数'))
           } else {
@@ -40,15 +40,15 @@ export default {
     }
     return {
       loginInfo: {
-        name: '',
-        password: ''
+        mobile: '13611111111',
+        code: '246810'
       },
       loginRules: {
-        name: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 3, max: 7, message: '长度在 3 到 7 个字符', trigger: 'blur' }
+        mobile: [
+          { required: true, message: '请输入电话号码', trigger: 'blur' },
+          { min: 11, max: 11, message: '长度为11位', trigger: 'blur' }
         ],
-        password: [
+        code: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { validator: validatePass, trigger: 'blur' }
         ]
@@ -59,9 +59,19 @@ export default {
     submitInfo (formName) {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          alert('登录成功!')
-          // 保存用户信息到本地
-          user.saveInfo(this.loginInfo)
+          alert('登录成功')
+          // 发送请求
+          this.$http({
+            method: 'post',
+            url: 'authorizations',
+            data: {
+              mobile: this.loginInfo.mobile,
+              code: this.loginInfo.code
+            }
+          }).then(res => {
+            // 保存用户信息到本地
+            user.saveInfo(res.data.data)
+          })
           // localStorage.setItem('key', this.loginInfo)
           this.$router.push('/home')
         } else {

@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
 import './plugins/element.js'
+import router from './router'
 
+import axios from './utiles/index'
+
+Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 new Vue({
