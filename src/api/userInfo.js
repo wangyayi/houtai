@@ -2,7 +2,7 @@
 // 将用户的信息保存在本地
 const key = 'userInfo'
 const saveInfo = (value) => {
-  localStorage.getItem(key, JSON.stringify(value))
+  localStorage.setItem(key, JSON.stringify(value))
 }
 const removeInfo = () => {
   localStorage.removeItem(key)

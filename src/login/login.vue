@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import user from '../api/userInfo.js'
 export default {
   data () {
     var validatePass = (rule, value, callback) => {
@@ -59,6 +60,9 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           alert('登录成功!')
+          // 保存用户信息到本地
+          user.saveInfo(this.loginInfo)
+          // localStorage.setItem('key', this.loginInfo)
           this.$router.push('/home')
         } else {
           console.log('error submit!!')
