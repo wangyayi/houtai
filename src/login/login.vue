@@ -72,7 +72,7 @@ export default {
             user.saveInfo(res.data.data)
           })
           // localStorage.setItem('key', this.loginInfo)
-          this.$router.push('/home')
+          this.$router.push('/')
           // this.$message({
           //   message: '登录成功啦',
           //   type: 'success'
